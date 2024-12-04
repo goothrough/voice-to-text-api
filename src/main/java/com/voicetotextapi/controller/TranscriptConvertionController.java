@@ -29,7 +29,7 @@ public class TranscriptConvertionController {
 		TranscriptConvertionServiceOutDto serviceOutDto = service.convertAudioDataToTranscript(serviceInDto);
 
 		TranscriptConvertionResponse res = new TranscriptConvertionResponse();
-		res.setTranscriptText(serviceOutDto.getTranscriptText());
+		res.setTranscriptText(serviceOutDto.getTranscript());
 
 		return res;
 

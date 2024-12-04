@@ -59,7 +59,7 @@ public class TranscriptConvertionServiceImpl implements TranscriptConvertionServ
 
 				String transcriptValue = getTranscriptValueFromPlainText(previousLine);
 				TranscriptConvertionServiceOutDto serviceOutDto = new TranscriptConvertionServiceOutDto();
-				serviceOutDto.setTranscriptText(transcriptValue);
+				serviceOutDto.setTranscript(transcriptValue);
 
 				return serviceOutDto;
 
@@ -73,6 +73,7 @@ public class TranscriptConvertionServiceImpl implements TranscriptConvertionServ
 			e.printStackTrace();
 			return null;
 		} catch (IOException e) {
+			// TODO
 			// Error during converting reqeusted file to bytes
 			// Error during getting inputstream from the response body
 			// Error during reading text of inputstream
