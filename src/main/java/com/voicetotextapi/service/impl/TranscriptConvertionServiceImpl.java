@@ -22,6 +22,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.voicetotextapi.exception.CustomException;
 import com.voicetotextapi.service.TranscriptConvertionService;
 import com.voicetotextapi.service.dto.TranscriptConvertionServiceInDto;
 import com.voicetotextapi.service.dto.TranscriptConvertionServiceOutDto;
@@ -37,6 +38,7 @@ public class TranscriptConvertionServiceImpl implements TranscriptConvertionServ
 	@Override
 	public TranscriptConvertionServiceOutDto convertAudioDataToTranscript(
 			TranscriptConvertionServiceInDto serviceInDto) {
+
 		try {
 			// Convert reqeusted file to bytes
 			byte[] audioData = serviceInDto.getAudiofile().getBytes();
@@ -71,16 +73,13 @@ public class TranscriptConvertionServiceImpl implements TranscriptConvertionServ
 		} catch (JsonProcessingException e) {
 			// Error during parsing text to Json
 			e.printStackTrace();
-			return null;
+			throw new CustomException("Something went wrong while processing response. Try again later.");
 		} catch (IOException e) {
-			// TODO
-			// Error during converting reqeusted file to bytes
+			// Error during converting requested file to bytes
 			// Error during getting inputstream from the response body
 			// Error during reading text of inputstream
-			return null;
-		} catch (Exception e) {
-			// Unexpected Error
-			return null;
+			e.printStackTrace();
+			throw new CustomException("Something went wrong while getting response. Try again later.");
 		}
 
 	}
