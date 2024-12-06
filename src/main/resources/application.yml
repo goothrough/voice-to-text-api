@@ -1,11 +1,15 @@
+# Setting to deploy on Render
+server:
+  port: ${PORT:8080}
+
 spring:
   application:
     name: voice-to-text-api
   # DB
   datasource:
-    url: jdbc:postgresql://localhost:5432/your_database_name
-    username: your_username
-    password: your_password
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -20,6 +24,6 @@ spring:
     
 witai:
   url: https://api.wit.ai/speech
-  accesstoken: your_token
+  accesstoken: ${WITAI_TOKEN}
   
 
