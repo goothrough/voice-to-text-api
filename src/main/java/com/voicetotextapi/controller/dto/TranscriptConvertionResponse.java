@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class TranscriptConvertionResponse {
 
-	private String transcriptText;
+	private String transcript;
 }
