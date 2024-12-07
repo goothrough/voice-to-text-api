@@ -99,12 +99,7 @@ public class TranscriptConvertionServiceImpl implements TranscriptConvertionServ
 		headers.set("Transfer-encoding", "chunked");
 
 		// Set the audio data to the body of the request
-		ByteArrayResource resource = new ByteArrayResource(audioData) {
-			@Override
-			public String getFilename() {
-				return "audio.wav";
-			}
-		};
+		ByteArrayResource resource = new ByteArrayResource(audioData);
 		HttpEntity<ByteArrayResource> requestEntity = new HttpEntity<>(resource, headers);
 
 		// Send a request to Wit.ai
