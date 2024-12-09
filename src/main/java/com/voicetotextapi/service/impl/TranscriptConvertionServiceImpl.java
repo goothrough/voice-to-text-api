@@ -40,7 +40,6 @@ public class TranscriptConvertionServiceImpl implements TranscriptConvertionServ
 	private String WIT_AI_API_URL;
 	@Value("${witai.accesstoken}")
 	private String WIT_AI_ACCESS_TOKEN;
-
 	private final SpeechRecordsRepository repository;
 
 	@Override
