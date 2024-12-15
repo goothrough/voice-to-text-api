@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
@@ -23,17 +24,23 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.voicetotextapi.exception.CustomException;
+import com.voicetotextapi.repository.SpeechRecordsRepository;
+import com.voicetotextapi.repository.entity.SpeechRecord;
 import com.voicetotextapi.service.TranscriptConvertionService;
 import com.voicetotextapi.service.dto.TranscriptConvertionServiceInDto;
 import com.voicetotextapi.service.dto.TranscriptConvertionServiceOutDto;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class TranscriptConvertionServiceImpl implements TranscriptConvertionService {
 
 	@Value("${witai.url}")
 	private String WIT_AI_API_URL;
 	@Value("${witai.accesstoken}")
 	private String WIT_AI_ACCESS_TOKEN;
+	private final SpeechRecordsRepository repository;
 
 	@Override
 	public TranscriptConvertionServiceOutDto convertAudioDataToTranscript(
@@ -60,6 +67,15 @@ public class TranscriptConvertionServiceImpl implements TranscriptConvertionServ
 				}
 
 				String transcriptValue = getTranscriptValueFromPlainText(previousLine);
+
+				// Save to Database
+				SpeechRecord speechRecord = new SpeechRecord();
+				speechRecord.setTranscript(transcriptValue);
+				Date currentDate = new Date();
+				speechRecord.setCreatedAt(currentDate);
+				speechRecord.setUpdatedAt(currentDate);
+				repository.save(speechRecord);
+
 				TranscriptConvertionServiceOutDto serviceOutDto = new TranscriptConvertionServiceOutDto();
 				serviceOutDto.setTranscript(transcriptValue);
 
@@ -67,7 +83,7 @@ public class TranscriptConvertionServiceImpl implements TranscriptConvertionServ
 
 			} else {
 				// Response status isn't OK
-				return null;
+				throw new CustomException("The response status was not OK. Try again later.");
 			}
 
 		} catch (JsonProcessingException e) {
@@ -125,4 +141,5 @@ public class TranscriptConvertionServiceImpl implements TranscriptConvertionServ
 		JsonNode jsonNode = objectMapper.readTree(fixedJson);
 		return jsonNode.get("text").asText();
 	}
+
 }
