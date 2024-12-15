@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.voicetotextapi.repository.SpeechRecordsRepository;
@@ -22,7 +23,7 @@ public class TranscriptHistoryServiceImpl implements TranscriptHistoryService {
 	@Override
 	public List<TranscriptHistoryServiceOutDto> getTranscriptRecords() {
 
-		List<SpeechRecord> speechRecords = repository.findAll();
+		List<SpeechRecord> speechRecords = repository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
 		List<TranscriptHistoryServiceOutDto> serviceOutDtos = new ArrayList<>();
 
 		speechRecords.forEach(s -> {
