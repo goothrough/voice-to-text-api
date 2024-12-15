@@ -67,7 +67,10 @@ public class TranscriptConvertionServiceImpl implements TranscriptConvertionServ
 				}
 
 				String transcriptValue = getTranscriptValueFromPlainText(previousLine);
-
+				if (transcriptValue.isEmpty() || transcriptValue == null) {
+					throw new CustomException(
+							"A transcript could not be created. The audio may have been empty. Please try again.");
+				}
 				// Save to Database
 				SpeechRecord speechRecord = new SpeechRecord();
 				speechRecord.setTranscript(transcriptValue);
@@ -83,19 +86,22 @@ public class TranscriptConvertionServiceImpl implements TranscriptConvertionServ
 
 			} else {
 				// Response status isn't OK
-				throw new CustomException("The response status was not OK. Try again later.");
+				throw new CustomException("The response status was not OK. Please try again later.");
 			}
 
 		} catch (JsonProcessingException e) {
 			// Error during parsing text to Json
 			e.printStackTrace();
-			throw new CustomException("Something went wrong while processing response. Try again later.");
+			throw new CustomException("Something went wrong while processing response. Please try again later.");
 		} catch (IOException e) {
 			// Error during converting requested file to bytes
 			// Error during getting inputstream from the response body
 			// Error during reading text of inputstream
 			e.printStackTrace();
-			throw new CustomException("Something went wrong while getting response. Try again later.");
+			throw new CustomException("Something went wrong while getting response. Please try again later.");
+		} catch (CustomException e) {
+			e.printStackTrace();
+			throw new CustomException(e.getMessage());
 		}
 
 	}

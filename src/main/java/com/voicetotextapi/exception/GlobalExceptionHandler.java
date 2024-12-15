@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
 	public Map<String, String> handleGenericException(Exception ex) {
 		return Map.of(
 				"error", "Internal Server Error",
-				"message", "An unexpected error occurred");
+				"message", ex.getMessage());
 	}
 
 	@ExceptionHandler(CustomException.class)
