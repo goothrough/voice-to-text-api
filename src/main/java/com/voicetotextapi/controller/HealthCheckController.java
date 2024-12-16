@@ -16,10 +16,9 @@ public class HealthCheckController {
 	private final JdbcTemplate jdbcTemplate;
 
 	@GetMapping("/health")
-	public String healthCheck() {
+	public void healthCheck() {
 
 		jdbcTemplate.execute("SELECT 1");
 
-		return "Health Check Return";
 	}
 }

@@ -5,6 +5,7 @@ server:
 spring:
   application:
     name: voice-to-text-api
+    url: ${APP_URL}
   # DB
   datasource:
     url: ${DATASOURCE_URL}
