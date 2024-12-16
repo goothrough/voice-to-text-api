@@ -23,9 +23,11 @@ public class TranscriptHistoryServiceImpl implements TranscriptHistoryService {
 	@Override
 	public List<TranscriptHistoryServiceOutDto> getTranscriptRecords() {
 
+		// Select records from database
 		List<SpeechRecord> speechRecords = repository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
-		List<TranscriptHistoryServiceOutDto> serviceOutDtos = new ArrayList<>();
 
+		List<TranscriptHistoryServiceOutDto> serviceOutDtos = new ArrayList<>();
+		
 		speechRecords.forEach(s -> {
 			TranscriptHistoryServiceOutDto outDto = new TranscriptHistoryServiceOutDto();
 			BeanUtils.copyProperties(s, outDto);
